@@ -1,0 +1,24 @@
+@{
+  Layout = "_Layout";
+}
+
+@model FantacyRecipe.Models.Recipe
+
+<h4>Edit this Recipe: @Html.DisplayFor(m=>m.RecipeName)</h4>
+
+<p>@Html.ValidationMessageFor(m=>m.RecipeName,"", new {@class = "text-danger", @style = "font-weight: 600;"})</p>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(m => m.RecipeId)
+
+  <p>Recipe Name: @Html.EditorFor(model => model.RecipeName)</p>
+  <p>Recipe Rating: @Html.EditorFor(model => model.RecipeRate)</p>
+  <p>Recipe Ingredients: @Html.EditorFor(model => model.RecipeIngredient)</p>
+  <p>Recipe Instructions:</p>
+  <p>@Html.EditorFor(model => model.RecipeInstructions)</p>
+  
+  <input type="submit" value="Save Changes" class="btn btn-default" />
+}
+
+<p>@Html.ActionLink("Back to recipes","Index")<p>

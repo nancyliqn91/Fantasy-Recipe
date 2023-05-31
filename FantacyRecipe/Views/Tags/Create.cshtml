@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout";
+}
+
+@model FantacyRecipe.Models.Tag
+
+<h4>Add a new tag</h4>
+
+<p>@Html.ValidationMessageFor(m=>m.TagName,"", new {@class = "text-danger", @style = "font-weight: 600;"})</p>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.TagName)
+    @Html.TextBoxFor(model => model.TagName)
+
+    <input type="submit" value="Add new tag" class="btn btn-primary" />
+}
+<p>@Html.ActionLink("Show all tags", "Index")</p>

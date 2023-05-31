@@ -1,0 +1,19 @@
+@{
+  Layout = "_Layout";
+}
+
+@using FantacyRecipe.Models;
+@*@model List<Recipe>;*@
+
+<h2>Searched Results</h2>
+<p>@Model.Count is this thing on</p>
+
+ <p>recipeList</p>
+<ul>
+  @foreach(Recipe recipe in Model)
+  {
+    <li>Recipe: @Html.ActionLink($"{recipe.RecipeName}", "Details", new { id = recipe.RecipeId })</li>
+  }
+</ul>
+
+

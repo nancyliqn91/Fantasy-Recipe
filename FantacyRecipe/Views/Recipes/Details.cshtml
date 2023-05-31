@@ -1,0 +1,44 @@
+@{
+  Layout = "_Layout";
+}
+
+@using FantacyRecipe.Models
+@model FantacyRecipe.Models.Recipe
+
+<h2>Recipe Details</h2>
+<hr />
+<h3>Recipe Name: @Html.DisplayFor(model => model.RecipeName)</h3>
+
+<p>Recipe Rating: @Html.DisplayFor(model => model.RecipeRate)</p>
+<p>Ingredients: @Html.DisplayFor(model => model.RecipeIngredient)</p>
+<p>Instructions: @Html.DisplayFor(model => model.RecipeInstructions)</p>
+
+@if(@Model.JoinEntities.Count == 0)
+{
+  <p>This recipe does not have any tags.</p>
+}
+else
+{
+  <h4>Tags the recipe has:</h4>
+  <ul>
+  @foreach(RecipeTag join in Model.JoinEntities)
+  {
+    <li>@join.Tag.TagName</li>
+
+    @using (Html.BeginForm("DeleteJoin", "Recipes"))
+    {
+      @Html.Hidden("joinId", @join.RecipeTagId)
+      <input type="submit" value="Delete"/>
+    }
+    
+  }
+  </ul>
+}
+
+<p>@Html.ActionLink("Back to list", "Index")</p>
+
+<p>@Html.ActionLink("Add a Tag", "AddTag", new { id = Model.RecipeId })</p>
+
+<p>@Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId })</p>
+
+<p>@Html.ActionLink("Delete Recipe", "Delete", new { id = Model.RecipeId })</p>

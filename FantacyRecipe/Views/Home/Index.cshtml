@@ -1,0 +1,49 @@
+@{
+  Layout = "_Layout";
+}
+
+@using FantacyRecipe.Models;
+
+<h1 id="header">Welcome to the Fantacy Recipe!</h1>
+<hr>
+
+
+@if (User.Identity.IsAuthenticated)
+{ 
+  <h4>Recipes for @User.Identity.Name</h4>
+  @if (Model["recipes"].Length == 0)
+  {
+    <p>No recipes have been added yet!</p>
+  } 
+  <ul>
+    @foreach (Recipe rec in Model["recipes"])
+    {
+      <li>@Html.ActionLink(@rec.RecipeName, "Details", "Recipes", new { id = @rec.RecipeId}) | @rec.RecipeRate ☆</li>
+    }
+  </ul>
+
+  <h4>Tags</h4>
+  @if (Model["tags"].Length == 0)
+  {
+    <p>No tags have been added yet!</p>
+  } 
+  <ul>
+    @foreach (Tag tag in Model["tags"])
+    {
+      <li>@Html.ActionLink(@tag.TagName, "Details", "Tags", new { id = @tag.TagId})</li>
+    }
+  </ul>
+}
+
+else
+{
+  <p>Please @Html.ActionLink("log in", "Login", "Account") to view or manage your recipes and tags.</p>
+}
+
+<hr>
+
+<p>@Html.ActionLink("Manage recipes", "Index", "Recipes")</p>
+<p>@Html.ActionLink("Manage Tags", "Index", "Tags")</p>
+<p>@Html.ActionLink("Create or manage an account", "Index", "Account")</p>
+
+<p>@Html.ActionLink("Search by Ingredient", "Search", "Recipes")</p>

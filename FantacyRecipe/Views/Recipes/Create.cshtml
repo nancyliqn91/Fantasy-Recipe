@@ -1,0 +1,23 @@
+@{
+  Layout = "_Layout";
+}
+
+@model FantacyRecipe.Models.Recipe
+
+<h4>Add a new recipe</h4>
+
+<p>@Html.ValidationMessageFor(m=>m.RecipeName,"", new {@class = "text-danger", @style = "font-weight: 600;"})</p>
+<p>@Html.ValidationMessageFor(m=>m.RecipeRate,"", new {@class = "text-danger", @style = "font-weight: 600;"})</p>
+
+@using (Html.BeginForm())
+{
+  <p>Recipe Name: @Html.TextBoxFor(model => model.RecipeName)</p>
+  <p>Recipe Rating: @Html.TextBoxFor(model => model.RecipeRate)</p>
+  <p>Recipe Ingredients: @Html.TextBoxFor(model => model.RecipeIngredient)</p>
+  <p>Recipe Instructions:</p>
+  <p>@Html.TextBoxFor(model => model.RecipeInstructions)</p>
+
+  <input type="submit" value="Add new recipe" class="btn btn-default" />
+}
+
+<p>@Html.ActionLink("Show all recipes", "Index")</p>

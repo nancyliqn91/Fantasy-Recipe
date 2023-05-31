@@ -1,0 +1,22 @@
+@{
+  Layout = "_Layout";
+}
+
+@model FantacyRecipe.Models.Tag
+
+<h2>Edit</h2>
+
+<p>@Html.ValidationMessageFor(m=>m.TagName,"", new {@class = "text-danger", @style = "font-weight: 600;"})</p>
+
+<h4>Edit this tag: @Html.DisplayFor(model => model.TagName)</h4>
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.TagId)
+
+  @Html.LabelFor(model => model.TagName)
+  @Html.EditorFor(model => model.TagName)
+
+  <input type="submit" value="Save" />
+}
+
+<p>@Html.ActionLink("Back to list", "Index")</p>

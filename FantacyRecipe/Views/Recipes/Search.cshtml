@@ -1,0 +1,17 @@
+@{
+  Layout = "_Layout";
+}
+
+@model FantacyRecipe.Models.Recipe
+
+<h4>Search a recipe by Ingredient.</h4>
+
+@using (Html.BeginForm())
+{
+
+  <p>Recipe Ingredients: @Html.TextBoxFor(model => model.RecipeIngredient)</p>
+
+  <input type="submit" value="Search a recipe" class="btn btn-default" />
+}
+
+<p>@Html.ActionLink("Show all recipes", "Index")</p>
