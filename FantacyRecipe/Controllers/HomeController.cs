@@ -22,29 +22,23 @@ namespace FantacyRecipe.Controllers
       }
 
       [HttpGet("/")]
-      public async Task<ActionResult> Index()
+      public ActionResult Index()
       {
         Recipe[] rec = _db.Recipes.OrderByDescending(rec => rec.RecipeRate).ToArray();
-        Tag[] tag = _db.Tags.OrderBy(tag  => tag.TagName).ToArray();
+        // Tag[] tag = _db.Tags.OrderBy(tag  => tag.TagName).ToArray();
         Dictionary<string,object[]> model = new Dictionary<string, object[]>();
                 
-        string userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+        // string userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
         
-        if (currentUser != null)
-        {
-          Recipe[] recipes = _db.Recipes
-                                .Where(entry => entry.User.Id == currentUser.Id)
-                                .ToArray();
-          model.Add("recipes", recipes);
+        // Recipe[] recipes = _db.Recipes.ToArray();
+        model.Add("recipes", rec);
           
-          Tag[] tags = _db.Tags
-                          .Where(entry => entry.User.Id == currentUser.Id)
-                          .ToArray();
-          model.Add("tags", tags);
-        }
-        
-        
+        // Tag[] tags = _db.Tags
+        //                 .Where(entry => entry.User.Id == currentUser.Id)
+        //                 .ToArray();
+        // model.Add("tags", tags);
+                
         return View(model);
       }      
 

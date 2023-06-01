@@ -40,6 +40,7 @@ namespace FantacyRecipe.Controllers
       {
         ApplicationUser user = new ApplicationUser { UserName = model.Email };
         IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+        
         if (result.Succeeded)
         {
           return RedirectToAction("Index");

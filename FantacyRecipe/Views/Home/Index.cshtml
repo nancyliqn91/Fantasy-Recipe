@@ -6,23 +6,34 @@
 
 <h1 id="header">Welcome to the Fantacy Recipe!</h1>
 <hr>
-
-
-@if (User.Identity.IsAuthenticated)
-{ 
-  <h4>Recipes for @User.Identity.Name</h4>
+ 
+  @*<h4>Recipes for @User.Identity.Name</h4>*@
+  
   @if (Model["recipes"].Length == 0)
   {
     <p>No recipes have been added yet!</p>
   } 
   <ul>
-    @foreach (Recipe rec in Model["recipes"])
+    @*@foreach (Recipe rec in Model["recipes"])
     {
       <li>@Html.ActionLink(@rec.RecipeName, "Details", "Recipes", new { id = @rec.RecipeId}) | @rec.RecipeRate ☆</li>
+    }*@
+    
+    @{int displayLength = 3;}
+    @if(Model["recipes"].Length < 3)
+    {
+      displayLength = Model["recipes"].Length;
     }
-  </ul>
 
-  <h4>Tags</h4>
+    <ul>
+      @for (int i = 0; i < displayLength; i ++)
+      {
+        Recipe rec = Model["recipes"][i];
+        <li>@Html.ActionLink(@rec.RecipeName, "Details", "Recipes", new { id = @rec.RecipeId}) | @rec.RecipeRate ☆</li>
+      }
+    </ul>
+    
+  @*<h4>Tags</h4>
   @if (Model["tags"].Length == 0)
   {
     <p>No tags have been added yet!</p>
@@ -32,18 +43,18 @@
     {
       <li>@Html.ActionLink(@tag.TagName, "Details", "Tags", new { id = @tag.TagId})</li>
     }
-  </ul>
-}
-
-else
-{
-  <p>Please @Html.ActionLink("log in", "Login", "Account") to view or manage your recipes and tags.</p>
-}
+  </ul>*@
 
 <hr>
+@if (User.Identity.IsAuthenticated)
+{
+  <p>Hello @User.Identity.Name!</p>
+  <p>@Html.ActionLink("View my recipes", "MyRecipes", "Recipes")</p>
+  <p>@Html.ActionLink("View my tags", "MyTags","Tags")</p>
+}
 
-<p>@Html.ActionLink("Manage recipes", "Index", "Recipes")</p>
-<p>@Html.ActionLink("Manage Tags", "Index", "Tags")</p>
+<p>@Html.ActionLink("View all recipes", "Index", "Recipes")</p>
+<p>@Html.ActionLink("View all Tags", "Index", "Tags")</p>
 <p>@Html.ActionLink("Create or manage an account", "Index", "Account")</p>
 
 <p>@Html.ActionLink("Search by Ingredient", "Search", "Recipes")</p>

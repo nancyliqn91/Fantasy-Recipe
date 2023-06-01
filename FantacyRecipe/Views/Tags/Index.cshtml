@@ -21,3 +21,10 @@
 <p>@Html.ActionLink("Create new recipe", "Create", "Recipes")</p>
 <p>@Html.ActionLink("Add new Tag", "Create")</p>
 <p>@Html.ActionLink("Home", "Index", "Home")</p>
+
+@if (User.Identity.IsAuthenticated)
+{
+  <p>Hello @User.Identity.Name!</p>
+  
+  <p>@Html.ActionLink("View my tags", "MyTags")</p>
+}

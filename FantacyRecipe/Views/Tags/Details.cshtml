@@ -23,7 +23,11 @@ else
     @using (Html.BeginForm("DeleteJoin", "Tags"))
     {
       @Html.Hidden("joinId", @join.RecipeTagId)
-      <input type="submit" value="Delete"/>
+      
+      @if (User.Identity.IsAuthenticated)
+      {
+        <input type="submit" value="Remove"/>
+      }
     }
   }
   </ul>

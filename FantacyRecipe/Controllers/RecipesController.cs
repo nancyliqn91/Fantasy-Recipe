@@ -26,8 +26,16 @@ namespace FantacyRecipe.Controllers
 
       _db = db;
     }
+    
+    [AllowAnonymous]
+    public ActionResult Index()
+    {
+      List<Recipe> allRecipes = _db.Recipes
+      .OrderBy(recipe => recipe.RecipeRate).ToList();                            
+      return View(allRecipes);
+    }
 
-    public async Task<ActionResult> Index()
+    public async Task<ActionResult> MyRecipes()
     {
       string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
@@ -62,7 +70,8 @@ namespace FantacyRecipe.Controllers
       }
       
     }
-
+   
+    [AllowAnonymous]
     public ActionResult Details(int id)
     {
       Recipe thisRecipe = _db.Recipes
@@ -72,10 +81,20 @@ namespace FantacyRecipe.Controllers
       return View(thisRecipe);
     }
 
-    public ActionResult Edit(int id)
+    public async Task<ActionResult> Edit(int id)
     {
+      string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
-      return View(thisRecipe);
+      if (thisRecipe.User == currentUser)
+      {
+        return View(thisRecipe);
+      }
+      else
+      {
+        RedirectToAction("Index");
+      }
     }
 
     [HttpPost]
@@ -86,10 +105,21 @@ namespace FantacyRecipe.Controllers
       return RedirectToAction("Index");
     }
 
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
+      string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
-      return View(thisRecipe);
+      if (thisRecipe.User == currentUser)
+      {
+        return View(thisRecipe);
+      }
+      else
+      {
+        RedirectToAction("Index");
+      }
+      
     }
 
     [HttpPost, ActionName("Delete")]
@@ -112,7 +142,9 @@ namespace FantacyRecipe.Controllers
                                 .ToList();
 
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
+      
       ViewBag.TagId = new SelectList(userTags, "TagId", "TagName");
+      
       return View(thisRecipe);
     }
 
@@ -133,12 +165,23 @@ namespace FantacyRecipe.Controllers
     }  
 
     [HttpPost]
-    public ActionResult DeleteJoin(int joinId)
+    public async Task<ActionResult> DeleteJoin(int joinId)
     {
+      string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+
       RecipeTag joinEntry = _db.RecipeTags.FirstOrDefault(entry => entry.RecipeTagId == joinId);
-      _db.RecipeTags.Remove(joinEntry);
-      _db.SaveChanges();
-      return RedirectToAction("Index");
+      Recipe thisRecipe _db.Recipes.FirstOrDefault(entry => entry.RecipeId == joinEntry.RecipeId);
+      if (thisRecipe.User == currentUser)
+      {
+        _db.RecipeTags.Remove(joinEntry);
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+      }
+      else
+      {
+        return RedirectToAction("Index", "Home");
+      }
     }
 
     public ActionResult Search()
