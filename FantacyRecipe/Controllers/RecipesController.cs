@@ -93,7 +93,7 @@ namespace FantacyRecipe.Controllers
       }
       else
       {
-        RedirectToAction("Index");
+        return RedirectToAction("Index");
       }
     }
 
@@ -117,7 +117,7 @@ namespace FantacyRecipe.Controllers
       }
       else
       {
-        RedirectToAction("Index");
+        return RedirectToAction("Index");
       }
       
     }
@@ -171,7 +171,7 @@ namespace FantacyRecipe.Controllers
       ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
 
       RecipeTag joinEntry = _db.RecipeTags.FirstOrDefault(entry => entry.RecipeTagId == joinId);
-      Recipe thisRecipe _db.Recipes.FirstOrDefault(entry => entry.RecipeId == joinEntry.RecipeId);
+      Recipe thisRecipe = _db.Recipes.FirstOrDefault(entry => entry.RecipeId == joinEntry.RecipeId);
       if (thisRecipe.User == currentUser)
       {
         _db.RecipeTags.Remove(joinEntry);
